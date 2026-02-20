@@ -28,10 +28,10 @@ namespace WinFlipped
             var visibleWindows = OpenWindows.TakeLast(WINDOWS_SHOW_LIMIT).ToList();
             var visibleWindowsCount = Math.Max(1, visibleWindows.Count);
 
-            _horizontalOffset = Math.Max(10, (int)((SystemParameters.VirtualScreenWidth - 300) / visibleWindowsCount));
-            _verticalOffset = Math.Max(10, (int)((SystemParameters.VirtualScreenHeight - 200) / visibleWindowsCount));
-            _imageLeft = Math.Max(0, (int)((SystemParameters.VirtualScreenWidth - (_horizontalOffset * (visibleWindowsCount - 1) + 300)) / 2));
-            _imageTop = Math.Max(0, (int)((SystemParameters.VirtualScreenHeight - (_verticalOffset * (visibleWindowsCount - 1) + 200)) / 2));
+            _horizontalOffset = Math.Max(10, (int)((SystemParameters.VirtualScreenWidth - 150) / visibleWindowsCount));
+            _verticalOffset = Math.Max(10, (int)((SystemParameters.VirtualScreenHeight - 100) / visibleWindowsCount));
+            _imageLeft = Math.Max(0, (int)((SystemParameters.VirtualScreenWidth - (_horizontalOffset * (visibleWindowsCount - 1) + 150)) / 2));
+            _imageTop = Math.Max(0, (int)((SystemParameters.VirtualScreenHeight - (_verticalOffset * (visibleWindowsCount - 1) + 100)) / 2));
 
             var imageTop = _imageTop;
             var imageLeft = _imageLeft;

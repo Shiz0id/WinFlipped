@@ -13,8 +13,8 @@ namespace WinFlipped
         private int _horizontalOffset = 10;
         // Rough approximation of maximum number of windows that this program can show
         private readonly int WINDOWS_SHOW_LIMIT = (int)Math.Min(
-            SystemParameters.FullPrimaryScreenHeight / 200,
-            SystemParameters.FullPrimaryScreenWidth / 300
+            SystemParameters.FullPrimaryScreenHeight / 100,
+            SystemParameters.FullPrimaryScreenWidth / 150
         );
         private IEnumerable<(nint MainWindowHandle, string MainWindowTitle, Bitmap MainWindowScreenshot)>? OpenWindows;
 
