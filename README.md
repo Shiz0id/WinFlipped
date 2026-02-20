@@ -26,6 +26,7 @@ Pressing Windows key + Tab key invoked Flip 3D, and continually pressing Windows
 - Precompiled binaries, if available, can be found on the `Releases` tab
 - The program can also be built from source
 - WinFlipped now runs from the system tray. Use the tray icon to open WinFlipped, quit, or rebind the activation hotkey.
+- Use the tray menu `View Debug Log` to open the local debug log file.
 - Press `TAB` to cycle through windows, and `ENTER` to switch to the selected one
 - Press any other key to close WinFlipped and return to tray mode.
 # Notes

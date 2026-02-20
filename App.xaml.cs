@@ -1,8 +1,11 @@
 using System.Drawing;
+using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using WinFlipped.Helpers;
 using FormsContextMenuStrip = System.Windows.Forms.ContextMenuStrip;
 using FormsNotifyIcon = System.Windows.Forms.NotifyIcon;
 using FormsToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem;
@@ -40,6 +43,7 @@ namespace WinFlipped
             _mainWindow = new MainWindow();
             InitializeHotKeyWindow();
             InitializeTrayIcon();
+            DebugLog.Write("Application started in tray mode.");
         }
 
         protected override void OnExit(ExitEventArgs e)
@@ -57,6 +61,7 @@ namespace WinFlipped
                 _trayIcon.Dispose();
             }
 
+            DebugLog.Write("Application exiting.");
             base.OnExit(e);
         }
 
@@ -71,6 +76,7 @@ namespace WinFlipped
         {
             var contextMenu = new FormsContextMenuStrip();
             contextMenu.Items.Add("Show WinFlipped", null, (_, _) => ShowMainWindow());
+            contextMenu.Items.Add("View Debug Log", null, (_, _) => OpenDebugLog());
 
             var hotkeyMenu = new FormsToolStripMenuItem("Rebind Hotkey");
             foreach (var option in _hotkeyOptions)
@@ -104,6 +110,28 @@ namespace WinFlipped
             _trayIcon.DoubleClick += (_, _) => ShowMainWindow();
         }
 
+        private static void OpenDebugLog()
+        {
+            var logPath = DebugLog.GetPath();
+            var fileExisted = File.Exists(logPath);
+            if (!fileExisted)
+            {
+                DebugLog.Write("Debug log file created.");
+            }
+
+            try
+            {
+                Process.Start(new ProcessStartInfo(logPath)
+                {
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception exception)
+            {
+                DebugLog.Write($"Failed to open debug log: {exception.Message}");
+            }
+        }
+
         private bool RegisterCurrentHotKey()
         {
             if (_hotKeyWindow is null)
@@ -133,6 +161,7 @@ namespace WinFlipped
                 _modifiers = previousModifiers;
                 _key = previousKey;
                 RegisterCurrentHotKey();
+                DebugLog.Write($"Hotkey rebind failed for {FormatHotkey(modifiers, key)}.");
                 return false;
             }
 
@@ -140,6 +169,8 @@ namespace WinFlipped
             {
                 _trayIcon.Text = $"WinFlipped ({FormatHotkey(_modifiers, _key)})";
             }
+
+            DebugLog.Write($"Hotkey rebound to {FormatHotkey(_modifiers, _key)}.");
 
             return true;
         }
@@ -178,6 +209,7 @@ namespace WinFlipped
 
         private void ShowMainWindow()
         {
+            DebugLog.Write("Showing WinFlipped window.");
             _mainWindow?.SummonToForeground();
         }
 
