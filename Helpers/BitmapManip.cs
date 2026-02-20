@@ -12,7 +12,7 @@ namespace WinFlipped.Helpers
         {
             using MemoryStream memory = new();
 
-            bitmap.Save(memory, ImageFormat.Bmp);
+            bitmap.Save(memory, ImageFormat.Png);
             memory.Position = 0;
 
             BitmapImage bitmapimage = new();
@@ -23,6 +23,33 @@ namespace WinFlipped.Helpers
             bitmapimage.EndInit();
 
             return bitmapimage;
+        }
+
+        /// <summary>
+        /// Skew a bitmap so it looks 3D (Flip3D perspective effect).
+        /// Each column is shifted down progressively less, creating a parallelogram.
+        /// </summary>
+        public static Bitmap SkewBitmap(this Bitmap bitmap)
+        {
+            var skewedBitmap = new Bitmap(bitmap.Width, 2 * bitmap.Height, PixelFormat.Format32bppArgb);
+            var space = bitmap.Height;
+            for (int x = 0; x < bitmap.Width; x++)
+            {
+                for (int y = 0; y < bitmap.Height; y++)
+                {
+                    Color pixelColor = bitmap.GetPixel(x, y);
+                    skewedBitmap.SetPixel(x, y + space, pixelColor);
+                }
+                if (space <= 0)
+                {
+                    return skewedBitmap;
+                }
+                else
+                {
+                    space--;
+                }
+            }
+            return skewedBitmap;
         }
 
         /// <summary>
@@ -37,10 +64,10 @@ namespace WinFlipped.Helpers
         public static Bitmap MergeBitmapSideBySide(this Bitmap baseBmp, Bitmap addedBmp, int? baseWidth = null, int? baseHeight = null, int? addedWidth = null, int? addedHeight = null)
         {
             if (baseWidth is not null && baseHeight is not null) {
-                baseBmp = new Bitmap(baseBmp, new Size(baseWidth.Value, baseHeight.Value));
+                baseBmp = new Bitmap(baseBmp, baseWidth.Value, baseHeight.Value);
             }
             if (addedWidth is not null && addedHeight is not null) {
-                addedBmp = new Bitmap(addedBmp, new Size(addedWidth.Value, addedHeight.Value));
+                addedBmp = new Bitmap(addedBmp, addedWidth.Value, addedHeight.Value);
             }
             Bitmap mergedBmp = new(baseBmp.Width + addedBmp.Width, Math.Max(baseBmp.Height, addedBmp.Height), PixelFormat.Format32bppArgb);
 
