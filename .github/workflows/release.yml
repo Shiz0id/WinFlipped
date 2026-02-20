@@ -1,0 +1,42 @@
+name: Release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore WinFlipped.csproj
+
+    - name: Build
+      run: dotnet build WinFlipped.csproj --configuration Release --no-restore
+
+    - name: Publish
+      run: dotnet publish WinFlipped.csproj --configuration Release --runtime win-x64 --self-contained true -p:PublishSingleFile=true --output publish
+
+    - name: Create ZIP archive
+      run: Compress-Archive -Path publish\* -DestinationPath WinFlipped-${{ github.event.release.tag_name }}.zip
+
+    - name: Upload release asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: WinFlipped-${{ github.event.release.tag_name }}.zip
+        asset_name: WinFlipped-${{ github.event.release.tag_name }}.zip
+        asset_content_type: application/zip
