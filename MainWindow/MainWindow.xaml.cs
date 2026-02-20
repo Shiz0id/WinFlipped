@@ -34,12 +34,15 @@ namespace WinFlipped
                 return;
             }
 
-            RenderWindows();
-            if (!IsVisible)
+            if (IsVisible)
             {
-                Show();
+                Activate();
+                Focus();
+                return;
             }
 
+            RenderWindows();
+            Show();
             Activate();
             Focus();
         }

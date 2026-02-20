@@ -209,6 +209,14 @@ namespace WinFlipped
 
         private void ShowMainWindow()
         {
+            if (_mainWindow?.IsVisible == true)
+            {
+                DebugLog.Write("WinFlipped window already visible; ignoring re-summon.");
+                _mainWindow.Activate();
+                _mainWindow.Focus();
+                return;
+            }
+
             DebugLog.Write("Showing WinFlipped window.");
             _mainWindow?.SummonToForeground();
         }

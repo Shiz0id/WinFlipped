@@ -16,6 +16,11 @@ namespace WinFlipped
         {
             var scale = 1.0;
             var zIndex = 1;
+            var wasVisible = IsVisible;
+            if (wasVisible)
+            {
+                Hide();
+            }
             
             canvas.Children.Clear();
 
@@ -39,6 +44,11 @@ namespace WinFlipped
                 imageTop += _verticalOffset;
                 scale += 0.1;
                 zIndex++;
+            }
+
+            if (wasVisible)
+            {
+                Show();
             }
 
             Activate();
