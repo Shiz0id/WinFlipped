@@ -9,11 +9,15 @@ namespace WinFlipped
     {
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            RenderWindows();
+        }
+
+        private void RenderWindows()
+        {
             var scale = 1.0;
             var zIndex = 1;
             
             canvas.Children.Clear();
-            Hide();
 
             OpenWindows = WindowsEnumerator.GetOpenWindows().Where(win => win.MainWindowHandle != new WindowInteropHelper(this).Handle);
             var visibleWindows = OpenWindows.TakeLast(WINDOWS_SHOW_LIMIT).ToList();
@@ -37,7 +41,6 @@ namespace WinFlipped
                 zIndex++;
             }
 
-            Show();
             Activate();
         }
     }

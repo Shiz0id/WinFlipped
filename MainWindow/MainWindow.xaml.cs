@@ -25,5 +25,23 @@ namespace WinFlipped
             KeyUp += new KeyEventHandler(MainWindow_KeyUp);
             Loaded += new RoutedEventHandler(MainWindow_Loaded);
         }
+
+        public void SummonToForeground()
+        {
+            if (!IsLoaded)
+            {
+                Show();
+                return;
+            }
+
+            RenderWindows();
+            if (!IsVisible)
+            {
+                Show();
+            }
+
+            Activate();
+            Focus();
+        }
     }
 }

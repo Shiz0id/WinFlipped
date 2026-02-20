@@ -25,9 +25,9 @@ Pressing Windows key + Tab key invoked Flip 3D, and continually pressing Windows
 # Usage
 - Precompiled binaries, if available, can be found on the `Releases` tab
 - The program can also be built from source
-- You can assign a key combination to launch this program, using tools like *AutoHotKey*
+- WinFlipped now runs from the system tray. Use the tray icon to open WinFlipped, quit, or rebind the activation hotkey.
 - Press `TAB` to cycle through windows, and `ENTER` to switch to the selected one
-- Press any other key to exit.
+- Press any other key to close WinFlipped and return to tray mode.
 # Notes
 - This program is NOT TESTED on computers with multiple monitors and may not work properly
 - This program is also NOT TESTED with multiple desktops
