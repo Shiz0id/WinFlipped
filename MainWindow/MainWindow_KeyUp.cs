@@ -45,19 +45,19 @@ namespace WinFlipped
                 // Move animation
                 foreach (Label label in canvas.Children.OfType<Label>())
                 {
-                    label.MoveBy(10, 10);
+                    label.MoveBy(_horizontalOffset, _verticalOffset);
                     Canvas.SetZIndex(label, Canvas.GetZIndex(label) + 1);
                 }
 
                 foreach (Image image in canvas.Children.OfType<Image>())
                 {
-                    image.MoveBy(10, 10);
+                    image.MoveBy(_horizontalOffset, _verticalOffset);
                     Canvas.SetZIndex(image, Canvas.GetZIndex(image) + 1);
                     image.ScaleBy(1.1);
                 }
 
                 // Add hidden window
-                (Label title, Image screenshot, Image icon) = canvas.DrawWindow(hiddenWindow.handle, hiddenWindow.title, hiddenWindow.screenshot, 100, 100, 1, 1, hidden: true);
+                (Label title, Image screenshot, Image icon) = canvas.DrawWindow(hiddenWindow.handle, hiddenWindow.title, hiddenWindow.screenshot, _imageTop, _imageLeft, 1, 1, hidden: true);
 
                 OpenWindows = OpenWindows.Prepend(OpenWindows.Last()).SkipLast(1);
 

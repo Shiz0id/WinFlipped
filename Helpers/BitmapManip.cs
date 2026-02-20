@@ -12,7 +12,7 @@ namespace WinFlipped.Helpers
         {
             using MemoryStream memory = new();
 
-            bitmap.Save(memory, ImageFormat.Bmp);
+            bitmap.Save(memory, ImageFormat.Png);
             memory.Position = 0;
 
             BitmapImage bitmapimage = new();
