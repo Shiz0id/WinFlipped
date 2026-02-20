@@ -77,7 +77,8 @@ namespace WinFlipped
             {
                 var menuItem = new FormsToolStripMenuItem(option.Label)
                 {
-                    Checked = option.Modifiers == _modifiers && option.Key == _key
+                    Checked = option.Modifiers == _modifiers && option.Key == _key,
+                    Tag = (option.Modifiers, option.Key)
                 };
                 menuItem.Click += (_, _) =>
                 {
@@ -169,7 +170,9 @@ namespace WinFlipped
         {
             foreach (FormsToolStripMenuItem menuItem in hotkeyMenu.DropDownItems)
             {
-                menuItem.Checked = menuItem.Text == FormatHotkey(_modifiers, _key);
+                menuItem.Checked = menuItem.Tag is ValueTuple<ModifierKeys, Key> hotkey
+                    && hotkey.Item1 == _modifiers
+                    && hotkey.Item2 == _key;
             }
         }
 

@@ -68,7 +68,7 @@ namespace WinFlipped
             }
             else if (eventArgs.Key == Key.Enter)
             {
-                // Show selected window
+                // Show selected window and return to tray mode
                 WindowsEnumerator.ShowWindow(OpenWindows?.Last().MainWindowHandle ?? 0, 1);
                 OpenWindows = null;
                 Hide();
