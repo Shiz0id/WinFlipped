@@ -41,7 +41,19 @@ namespace WinFlipped
                 return;
             }
 
-            RenderWindows();
+            var hasRenderedImages = canvas.Children.OfType<System.Windows.Controls.Image>().Any();
+            if ((OpenWindows is null) != !hasRenderedImages)
+            {
+                OpenWindows = null;
+                canvas.Children.Clear();
+                hasRenderedImages = false;
+            }
+
+            if (OpenWindows is null || !hasRenderedImages)
+            {
+                RenderWindows();
+            }
+
             Show();
             Activate();
             Focus();
