@@ -44,8 +44,8 @@ namespace WinFlipped.Helpers
 
             Image image = new()
             {
-                Height = 100 * scale,
-                Width = 150 * scale,
+                Height = 200 * scale,
+                Width = 300 * scale,
                 Name = "_" + windowHandle.ToString(),
                 Source = windowScreenshot.SkewBitmap().MergeBitmapSideBySide(icon, 300, 200, 50, 50).ToBitmapImage(),
                 Opacity = hidden ? 0 : 1
