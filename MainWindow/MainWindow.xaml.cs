@@ -25,5 +25,38 @@ namespace WinFlipped
             KeyUp += new KeyEventHandler(MainWindow_KeyUp);
             Loaded += new RoutedEventHandler(MainWindow_Loaded);
         }
+
+        public void SummonToForeground()
+        {
+            if (!IsLoaded)
+            {
+                Show();
+                return;
+            }
+
+            if (IsVisible)
+            {
+                Activate();
+                Focus();
+                return;
+            }
+
+            var hasRenderedImages = canvas.Children.OfType<System.Windows.Controls.Image>().Any();
+            if ((OpenWindows is null) != !hasRenderedImages)
+            {
+                OpenWindows = null;
+                canvas.Children.Clear();
+                hasRenderedImages = false;
+            }
+
+            if (OpenWindows is null || !hasRenderedImages)
+            {
+                RenderWindows();
+            }
+
+            Show();
+            Activate();
+            Focus();
+        }
     }
 }

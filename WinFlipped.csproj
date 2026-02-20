@@ -8,7 +8,7 @@
     <UseWPF>true</UseWPF>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <SupportedOSPlatformVersion>10.0.22000.0</SupportedOSPlatformVersion>
-    <UseWindowsForms>False</UseWindowsForms>
+    <UseWindowsForms>True</UseWindowsForms>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>github.com/nxhduong/WinFlipped</RepositoryUrl>
     <ApplicationIcon>Resources\Images\AppIcon.ico</ApplicationIcon>
@@ -27,6 +27,11 @@
 
   <ItemGroup>
     <Content Include="Resources\Images\AppIcon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Remove="System.Drawing" />
+    <Using Remove="System.Windows.Forms" />
   </ItemGroup>
 
   <ItemGroup>
