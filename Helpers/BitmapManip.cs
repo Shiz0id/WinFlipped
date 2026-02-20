@@ -26,6 +26,33 @@ namespace WinFlipped.Helpers
         }
 
         /// <summary>
+        /// Skew a bitmap so it looks 3D (Flip3D perspective effect).
+        /// Each column is shifted down progressively less, creating a parallelogram.
+        /// </summary>
+        public static Bitmap SkewBitmap(this Bitmap bitmap)
+        {
+            var skewedBitmap = new Bitmap(bitmap.Width, 2 * bitmap.Height, PixelFormat.Format32bppArgb);
+            var space = bitmap.Height;
+            for (int x = 0; x < bitmap.Width; x++)
+            {
+                for (int y = 0; y < bitmap.Height; y++)
+                {
+                    Color pixelColor = bitmap.GetPixel(x, y);
+                    skewedBitmap.SetPixel(x, y + space, pixelColor);
+                }
+                if (space <= 0)
+                {
+                    return skewedBitmap;
+                }
+                else
+                {
+                    space--;
+                }
+            }
+            return skewedBitmap;
+        }
+
+        /// <summary>
         /// Combine two bitmaps into one.
         /// </summary>
         /// <param name="baseBmp">The bitmap that you want to add another bitmap to</param>

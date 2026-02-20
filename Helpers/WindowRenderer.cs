@@ -8,9 +8,6 @@ namespace WinFlipped.Helpers
 {
     internal static partial class WindowRenderer
     {
-        /// <summary>Y-axis skew angle (in degrees) applied to window thumbnails for the Flip3D perspective effect.</summary>
-        private const double Flip3DSkewAngle = -20;
-
         [LibraryImport("user32.dll")]
         private static partial uint GetWindowThreadProcessId(nint hWnd, out uint processId);
 
@@ -37,8 +34,7 @@ namespace WinFlipped.Helpers
                 Content = windowTitle + "|Handle " + windowHandle,
                 Name = '_' + windowHandle.ToString(),
                 Foreground = new BrushConverter().ConvertFromString("#FFFFFF") as Brush,
-                Opacity = hidden? 0 : 1,
-                LayoutTransform = new SkewTransform(0, Flip3DSkewAngle)
+                Opacity = hidden? 0 : 1
             };
 
             GetWindowThreadProcessId(windowHandle, out uint pId);
@@ -51,9 +47,8 @@ namespace WinFlipped.Helpers
                 Height = 100 * scale,
                 Width = 150 * scale,
                 Name = "_" + windowHandle.ToString(),
-                Source = windowScreenshot.MergeBitmapSideBySide(icon, 300, 200, 50, 50).ToBitmapImage(),
-                Opacity = hidden ? 0 : 1,
-                LayoutTransform = new SkewTransform(0, Flip3DSkewAngle)
+                Source = windowScreenshot.SkewBitmap().MergeBitmapSideBySide(icon, 300, 200, 50, 50).ToBitmapImage(),
+                Opacity = hidden ? 0 : 1
             };
 
             canvas.Children.Add(image);
