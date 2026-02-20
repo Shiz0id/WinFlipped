@@ -37,10 +37,10 @@ namespace WinFlipped.Helpers
         public static Bitmap MergeBitmapSideBySide(this Bitmap baseBmp, Bitmap addedBmp, int? baseWidth = null, int? baseHeight = null, int? addedWidth = null, int? addedHeight = null)
         {
             if (baseWidth is not null && baseHeight is not null) {
-                baseBmp = new Bitmap(baseBmp, baseWidth, baseHeight);
+                baseBmp = new Bitmap(baseBmp, new Size(baseWidth.Value, baseHeight.Value));
             }
             if (addedWidth is not null && addedHeight is not null) {
-                addedBmp = new Bitmap(addedBmp, addedWidth, addedHeight);
+                addedBmp = new Bitmap(addedBmp, new Size(addedWidth.Value, addedHeight.Value));
             }
             Bitmap mergedBmp = new(baseBmp.Width + addedBmp.Width, Math.Max(baseBmp.Height, addedBmp.Height), PixelFormat.Format32bppArgb);
 
