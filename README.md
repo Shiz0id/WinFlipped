@@ -25,10 +25,16 @@ Pressing Windows key + Tab key invoked Flip 3D, and continually pressing Windows
 # Usage
 - Precompiled binaries, if available, can be found on the `Releases` tab
 - The program can also be built from source
-- WinFlipped now runs from the system tray. Use the tray icon to open WinFlipped, quit, or rebind the activation hotkey.
-- Use the tray menu `View Debug Log` to open the local debug log file.
+- **WinFlipped starts minimized to the system notification area (tray).** When it launches you will see a brief balloon tip confirming it is running.
+- To open WinFlipped: press the default hotkey **Ctrl + Alt + F**, or double-click the tray icon, or right-click the tray icon and choose **Show WinFlipped**.
+- Use the tray menu **Rebind Hotkey** to switch to an alternative hotkey (Ctrl + Alt + W or Ctrl + Shift + F).
+- Use the tray menu **View Debug Log** to open the local debug log file.
 - Press `TAB` to cycle through windows, and `ENTER` to switch to the selected one
 - Press any other key to close WinFlipped and return to tray mode.
+# Troubleshooting
+- **No tray icon appears:** Windows may hide new notification icons in the overflow area (`^` chevron near the clock). Click the chevron to find the WinFlipped icon. You can drag it out to the visible area.
+- **The hotkey does not work:** Another application may already be using the same key combination. A balloon tip will warn you at startup if this happens. Right-click the tray icon and choose **Rebind Hotkey** to select an alternative. The debug log (tray menu → **View Debug Log**) contains the exact error.
+- **The application appears to do nothing after launch:** This is expected — WinFlipped intentionally runs in the background. Look for the icon in the notification area and use one of the methods above to open it.
 # Notes
 - This program is NOT TESTED on computers with multiple monitors and may not work properly
 - This program is also NOT TESTED with multiple desktops

@@ -26,6 +26,7 @@ namespace WinFlipped
         private FormsNotifyIcon? _trayIcon;
         private HwndSource? _hotKeyWindow;
         private MainWindow? _mainWindow;
+        private string? _pendingHotkeyFailureMessage;
         private ModifierKeys _modifiers = ModifierKeys.Control | ModifierKeys.Alt;
         private Key _key = Key.F;
         private readonly (string Label, ModifierKeys Modifiers, Key Key)[] _hotkeyOptions =
@@ -69,7 +70,17 @@ namespace WinFlipped
         {
             _hotKeyWindow = new HwndSource(new HwndSourceParameters("WinFlippedHotKeyWindow"));
             _hotKeyWindow.AddHook(WndProc);
-            RegisterCurrentHotKey();
+
+            if (!RegisterCurrentHotKey())
+            {
+                var hotkey = FormatHotkey(_modifiers, _key);
+                DebugLog.Write($"Failed to register hotkey {hotkey}. Another application may already be using it.");
+                _pendingHotkeyFailureMessage = $"Could not register hotkey {hotkey}. Use 'Rebind Hotkey' in the tray menu to choose another.";
+            }
+            else
+            {
+                DebugLog.Write($"Hotkey {FormatHotkey(_modifiers, _key)} registered successfully.");
+            }
         }
 
         private void InitializeTrayIcon()
@@ -108,6 +119,16 @@ namespace WinFlipped
                 ContextMenuStrip = contextMenu
             };
             _trayIcon.DoubleClick += (_, _) => ShowMainWindow();
+
+            if (_pendingHotkeyFailureMessage is not null)
+            {
+                _trayIcon.ShowBalloonTip(8000, "WinFlipped – Hotkey Unavailable", _pendingHotkeyFailureMessage, System.Windows.Forms.ToolTipIcon.Warning);
+                _pendingHotkeyFailureMessage = null;
+            }
+            else
+            {
+                _trayIcon.ShowBalloonTip(4000, "WinFlipped is running", $"Press {FormatHotkey(_modifiers, _key)} or double-click this icon to open.", System.Windows.Forms.ToolTipIcon.Info);
+            }
         }
 
         private static void OpenDebugLog()
@@ -160,8 +181,12 @@ namespace WinFlipped
             {
                 _modifiers = previousModifiers;
                 _key = previousKey;
-                RegisterCurrentHotKey();
+                var rollbackSucceeded = RegisterCurrentHotKey();
                 DebugLog.Write($"Hotkey rebind failed for {FormatHotkey(modifiers, key)}.");
+                var balloonMessage = rollbackSucceeded
+                    ? $"Could not register {FormatHotkey(modifiers, key)}. The previous hotkey is still active."
+                    : $"Could not register {FormatHotkey(modifiers, key)}, and the previous hotkey could not be restored. Use 'Rebind Hotkey' to reassign.";
+                _trayIcon?.ShowBalloonTip(6000, "WinFlipped – Rebind Failed", balloonMessage, System.Windows.Forms.ToolTipIcon.Warning);
                 return false;
             }
 
