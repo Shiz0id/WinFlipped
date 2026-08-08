@@ -10,6 +10,10 @@ jobs:
     permissions:
       contents: write
 
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -23,20 +27,15 @@ jobs:
       run: dotnet restore WinFlipped.csproj
 
     - name: Build
-      run: dotnet build WinFlipped.csproj --configuration Release --no-restore
+      run: dotnet build WinFlipped.csproj --configuration ${{ matrix.configuration }} --no-restore
 
     - name: Publish
-      run: dotnet publish WinFlipped.csproj --configuration Release --runtime win-x64 --self-contained true -p:PublishSingleFile=true --output publish
+      run: dotnet publish WinFlipped.csproj --configuration ${{ matrix.configuration }} --runtime win-x64 --self-contained true -p:PublishSingleFile=true --output publish\${{ matrix.configuration }}
 
     - name: Create ZIP archive
-      run: Compress-Archive -Path publish\* -DestinationPath WinFlipped-${{ github.event.release.tag_name }}.zip
+      run: Compress-Archive -Path publish\${{ matrix.configuration }}\* -DestinationPath WinFlipped-${{ github.event.release.tag_name }}-${{ matrix.configuration }}.zip
 
     - name: Upload release asset
-      uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: WinFlipped-${{ github.event.release.tag_name }}.zip
-        asset_name: WinFlipped-${{ github.event.release.tag_name }}.zip
-        asset_content_type: application/zip
+      run: gh release upload ${{ github.event.release.tag_name }} WinFlipped-${{ github.event.release.tag_name }}-${{ matrix.configuration }}.zip --clobber
